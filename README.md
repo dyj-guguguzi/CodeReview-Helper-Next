@@ -13,7 +13,7 @@ CodeReview Helper Next 是基于 [Veezean / IntellijIDEA-CodeReview-Plugin](http
 | 打开 CodeReview 只显示“没有要显示的内容” | 旧版依赖和 GUI Designer 生成代码无法适配新版运行环境，工具窗口初始化失败 | 补齐运行依赖与窗体生成代码，恢复工具窗口显示 |
 | 双击评审表格白色区域无法跳转源码 | IDEA 2026 要求文件索引查询在 `ReadAction` 中执行 | 将文件查找放入 `ReadAction`，并使用新版文件打开方式定位到评审行 |
 
-当前维护版本：**4.2.3**。
+当前维护版本：**4.2.4**。
 
 ## 兼容性
 
@@ -36,7 +36,7 @@ CodeReview Helper Next 是基于 [Veezean / IntellijIDEA-CodeReview-Plugin](http
 
 ### 从本仓库安装
 
-下载 [CodeReview-Helper-Next-4.2.3.zip](build/distributions/CodeReview-Helper-Next-4.2.3.zip)，然后在 IDEA 中打开：
+下载 [CodeReview-Helper-Next-4.2.4.zip](build/distributions/CodeReview-Helper-Next-4.2.4.zip)，然后在 IDEA 中打开：
 
 `Settings / Preferences → Plugins → ⚙ → Install Plugin from Disk...`
 

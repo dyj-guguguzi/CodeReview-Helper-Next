@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.dyj.codereview.helper.next</id>
   <name>CodeReview Helper Next</name>
-  <version>4.2.3</version>
+  <version>4.2.4</version>
   <vendor url="https://github.com/dyj-guguguzi/CodeReview-Helper-Next">dyj-guguguzi</vendor>
 
   <description><![CDATA[
@@ -23,6 +23,7 @@
   <change-notes><![CDATA[
 
       English:<br>
+      2026-08-13: V4.2.4 replaces internal plugin-version lookup APIs and fixes the network-mode plugin ID.<br>
       2026-08-13: V4.2.3 fixes IDEA 2026 Tool Window initialization, code navigation compatibility, and removes a bundled IDE platform library.<br>
       2025-01-05: V4.2.2 support idea v2024.3+ <br>
       2024-08-08: V4.2.1 support line marker and original content snapshot, and several new functions <br>
@@ -48,6 +49,7 @@
       2019-10-04: V1.0 First version, provide base functions like add comment, import and export, etc.<br>
       <br>
       中文：<br>
+      2026-08-13: V4.2.4 替换内部插件版本查询 API，并修复网络模式中的插件 ID。<br>
       2026-08-13: V4.2.3 修复 IDEA 2026 工具窗口初始化、代码跳转兼容问题，并移除误打包的 IDE 平台依赖。<br>
       2025-01-05: V4.2.2 支持v2024.3+以上版本的新IDEA中使用 <br>
       2024-08-08: V4.2.1 支持划线标记以及内容快照，以及部分新增功能<br>

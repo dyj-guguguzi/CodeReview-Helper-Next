@@ -5,7 +5,7 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.intellij.ide.plugins.PluginManagerCore;
+import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.extensions.PluginId;
 import com.veezean.idea.plugin.codereviewer.model.GlobalConfigInfo;
 import com.veezean.idea.plugin.codereviewer.model.Response;
@@ -47,8 +47,8 @@ public class NetworkOperationHelper {
 
         // 插件客户端版本
         String pluginVersion =
-                Objects.requireNonNull(PluginManagerCore.getPlugin(PluginId.getId("com.veezean.idea.plugin" +
-                        ".codereviewer"))).getVersion();
+                Objects.requireNonNull(PluginManager.getPlugin(PluginId.getId("com.dyj.codereview.helper.next")))
+                        .getVersion();
         headers.put("version", pluginVersion);
         return headers;
     }

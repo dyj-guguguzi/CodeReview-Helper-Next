@@ -11,7 +11,7 @@ import com.veezean.idea.plugin.codereviewer.model.ReviewComment;
 import com.veezean.idea.plugin.codereviewer.util.CommonUtil;
 import com.veezean.idea.plugin.codereviewer.util.LanguageUtil;
 import com.veezean.idea.plugin.codereviewer.util.Logger;
-import org.apache.commons.lang.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +37,7 @@ public class ShowSnapshotUI extends JDialog {
 
         // 快照内容填充到编辑器中
         String fileSnapshot = this.commentInfoModel.getFileSnapshot();
-        if (StringUtils.isEmpty(fileSnapshot)) {
+        if (StrUtil.isEmpty(fileSnapshot)) {
             fileSnapshot = "No Snapshot Content!!!";
         }
         Document document = EditorFactory.getInstance().createDocument(fileSnapshot);

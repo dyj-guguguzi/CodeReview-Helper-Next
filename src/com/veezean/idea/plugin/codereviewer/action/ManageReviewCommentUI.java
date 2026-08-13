@@ -4,6 +4,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.codeInsight.highlighting.HighlightHandlerBase;
 import com.intellij.codeInsight.highlighting.HighlightUsagesHandlerBase;
+import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.editor.*;
 import com.intellij.openapi.editor.colors.EditorColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
@@ -17,7 +18,8 @@ import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
-import com.intellij.psi.search.PsiShortNamesCache;
+import com.intellij.psi.search.FilenameIndex;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.ui.JBColor;
 import com.veezean.idea.plugin.codereviewer.action.element.DateSelectCreator;
 import com.veezean.idea.plugin.codereviewer.common.CommitFlag;
@@ -31,7 +33,7 @@ import com.veezean.idea.plugin.codereviewer.model.*;
 import com.veezean.idea.plugin.codereviewer.service.ProjectLevelService;
 import com.veezean.idea.plugin.codereviewer.util.*;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -297,29 +299,28 @@ public class ManageReviewCommentUI {
             return;
         }
 
-        PsiFile[] filesByName = PsiShortNamesCache.getInstance(project).getFilesByName(filePath);
-        if (filesByName.length > 0) {
-            PsiFile psiFile = Stream.of(filesByName).filter(psi -> {
-                if (psi instanceof PsiJavaFile && StringUtils.isNotEmpty(packageName)) {
+        VirtualFile virtualFile = ReadAction.compute(() -> {
+            java.util.Collection<VirtualFile> virtualFiles =
+                    FilenameIndex.getVirtualFilesByName(filePath, GlobalSearchScope.projectScope(project));
+            return virtualFiles.stream()
+                    .map(candidate -> com.intellij.psi.PsiManager.getInstance(project).findFile(candidate))
+                    .filter(java.util.Objects::nonNull)
+                    .filter(psi -> {
+                if (psi instanceof PsiJavaFile && StrUtil.isNotEmpty(packageName)) {
                     PsiJavaFile javaFile = (PsiJavaFile) psi;
                     String pkgName = javaFile.getPackageName();
-                    return StringUtils.equals(pkgName, packageName);
+                    return StrUtil.equals(pkgName, packageName);
                 } else {
                     return true;
                 }
-            }).findFirst().orElse(null);
+            }).map(PsiFile::getVirtualFile).findFirst().orElse(null);
+        });
 
-            if (psiFile == null) {
-                Messages.showErrorDialog(ManageReviewCommentUI.this.fullPanel.getRootPane(),
-                        LanguageUtil.getString("ALERT_CONTENT_FAILED") + System.lineSeparator() +
-                                LanguageUtil.getString("ALERT_ERR_FILE_NOT_EXIST") + packageName + "." + filePath,
-                        LanguageUtil.getString("ALERT_TITLE_FAILED"));
-                return;
-            }
-
-            VirtualFile virtualFile = psiFile.getVirtualFile();
+        if (virtualFile != null) {
             // 打开对应的文件
-            OpenFileDescriptor openFileDescriptor = new OpenFileDescriptor(project, virtualFile);
+            // 使用 IDEA 的 0-based 行号直接打开目标位置，避免先打开文件再移动 caret 的时序问题。
+            OpenFileDescriptor openFileDescriptor = new OpenFileDescriptor(project, virtualFile,
+                    commentInfoModel.getStartLine(), 0);
             Editor editor = FileEditorManager.getInstance(project).openTextEditor(openFileDescriptor, true);
             if (editor == null) {
                 Messages.showErrorDialog(ManageReviewCommentUI.this.fullPanel.getRootPane(),
@@ -330,12 +331,6 @@ public class ManageReviewCommentUI {
                 return;
             }
 
-            // 跳转到指定的位置
-            CaretModel caretModel = editor.getCaretModel();
-            LogicalPosition logicalPosition = caretModel.getLogicalPosition();
-            logicalPosition.leanForward(true);
-            LogicalPosition logical = new LogicalPosition(commentInfoModel.getStartLine(), logicalPosition.column);
-            caretModel.moveToLogicalPosition(logical);
             editor.getScrollingModel().scrollToCaret(ScrollType.CENTER);
 
             CodeCommentMarker.markOneComment(editor, commentInfoModel, false);

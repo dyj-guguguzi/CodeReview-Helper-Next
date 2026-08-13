@@ -1,7 +1,7 @@
 package com.veezean.idea.plugin.codereviewer.model;
 
 import com.veezean.idea.plugin.codereviewer.util.Logger;
-import org.apache.commons.lang.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -48,11 +48,11 @@ public class ValuePair implements Serializable {
 
     @Override
     public String toString() {
-        return StringUtils.isNotEmpty(showName) ? showName : value;
+        return StrUtil.isNotEmpty(showName) ? showName : value;
     }
 
     public String getStringValue() {
-        if (StringUtils.isEmpty(this.showName) || StringUtils.equals(this.value, this.showName)) {
+        if (StrUtil.isEmpty(this.showName) || StrUtil.equals(this.value, this.showName)) {
             return this.value;
         }
         return this.value + "|" + this.showName;
@@ -67,7 +67,7 @@ public class ValuePair implements Serializable {
      */
     public static ValuePair buildPairSupportSplit(String stringValue) {
         ValuePair valuePair = new ValuePair();
-        if (StringUtils.isEmpty(stringValue)) {
+        if (StrUtil.isEmpty(stringValue)) {
             return valuePair;
         }
         String[] split = stringValue.split("\\|");
@@ -84,7 +84,7 @@ public class ValuePair implements Serializable {
 
     public static ValuePair buildRawPair(String stringValue) {
         ValuePair valuePair = new ValuePair();
-        if (StringUtils.isEmpty(stringValue)) {
+        if (StrUtil.isEmpty(stringValue)) {
             return valuePair;
         }
         return ValuePair.buildPair(stringValue, null);

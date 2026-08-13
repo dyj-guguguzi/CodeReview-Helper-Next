@@ -12,7 +12,7 @@ import com.veezean.idea.plugin.codereviewer.model.ReviewComment;
 import com.veezean.idea.plugin.codereviewer.model.ValuePair;
 import com.veezean.idea.plugin.codereviewer.util.CommonUtil;
 import com.veezean.idea.plugin.codereviewer.util.Logger;
-import org.apache.commons.lang.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -79,7 +79,7 @@ public class InnerProjectCache {
             List<ReviewComment> results = new ArrayList<>();
             cachedComments.forEach((id, commentInfoModel) -> results.add(commentInfoModel));
             return results.stream()
-                    .filter(reviewComment -> StringUtils.equals(reviewComment.getFileShortInfo().getFileName(),
+                    .filter(reviewComment -> StrUtil.equals(reviewComment.getFileShortInfo().getFileName(),
                             fileName))
                     .collect(Collectors.toList());
         } catch (Exception e) {

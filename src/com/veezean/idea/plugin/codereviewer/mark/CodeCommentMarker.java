@@ -4,7 +4,6 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.markup.*;
 import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.JBColor;
@@ -37,10 +36,15 @@ public class CodeCommentMarker {
             String virtualFileName = virtualFile.getName();
             List<ReviewComment> cachedComments =
                     ProjectLevelService.getService(project).getProjectCache().getCachedCommentsByFile(virtualFileName);
-            OpenFileDescriptor openFileDescriptor = new OpenFileDescriptor(project, virtualFile);
-            Editor editor = FileEditorManager.getInstance(project).openTextEditor(openFileDescriptor, true);
+            // 仅处理当前已经打开的文本编辑器，不主动打开差异预览等非文本编辑器。
+            Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
             if (editor == null) {
-                Logger.error("editor is null, file:" + virtualFileName);
+                Logger.info("当前文件没有可标记的文本编辑器，跳过标记，文件：" + virtualFileName);
+                return;
+            }
+            VirtualFile editorFile = editor.getVirtualFile();
+            if (editorFile == null || !virtualFile.equals(editorFile)) {
+                Logger.info("当前文本编辑器与文件不匹配，跳过标记，文件：" + virtualFileName);
                 return;
             }
 

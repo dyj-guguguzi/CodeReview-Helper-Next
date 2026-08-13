@@ -3,7 +3,7 @@ package com.veezean.idea.plugin.codereviewer.model;
 import cn.hutool.core.io.file.FileNameUtil;
 import com.veezean.idea.plugin.codereviewer.common.CodeReviewException;
 import com.veezean.idea.plugin.codereviewer.common.CommitFlag;
-import org.apache.commons.lang.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -177,7 +177,7 @@ public class ReviewComment implements Serializable {
 
     public void setLineRangeInfo() {
         String lineRange = getStringPropValue("lineRange");
-        if (StringUtils.isNotEmpty(lineRange)) {
+        if (StrUtil.isNotEmpty(lineRange)) {
             String[] lines = lineRange.split("~");
             if (lines.length == 2) {
                 try {
@@ -201,7 +201,7 @@ public class ReviewComment implements Serializable {
     public String fileSuffix() {
         String suffix = "";
         String filePath = getFilePath();
-        if (StringUtils.isNotEmpty(filePath)) {
+        if (StrUtil.isNotEmpty(filePath)) {
             suffix = FileNameUtil.getSuffix(filePath);
         }
         return suffix;

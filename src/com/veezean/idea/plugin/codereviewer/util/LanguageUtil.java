@@ -3,7 +3,7 @@ package com.veezean.idea.plugin.codereviewer.util;
 import cn.hutool.core.io.FileUtil;
 import com.veezean.idea.plugin.codereviewer.common.GlobalConfigManager;
 import com.veezean.idea.plugin.codereviewer.consts.LanguageType;
-import org.apache.commons.lang.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -54,13 +54,13 @@ public class LanguageUtil {
         String value;
         if (LanguageType.CHINESE.equals(languageType)) {
             value = Optional.ofNullable(chineseProperties.get(key))
-                    .filter(StringUtils::isNotEmpty)
+                    .filter(StrUtil::isNotEmpty)
                     .orElse(englishProperties.get(key));
         } else {
             value = englishProperties.get(key);
         }
 
-        if (StringUtils.isEmpty(value)) {
+        if (StrUtil.isEmpty(value)) {
             value = "{{" + key + "}}";
         }
         return value;

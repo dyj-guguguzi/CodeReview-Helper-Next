@@ -1,7 +1,7 @@
 package com.veezean.idea.plugin.codereviewer.model;
 
 import com.veezean.idea.plugin.codereviewer.common.CodeReviewException;
-import org.apache.commons.lang.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -69,13 +69,13 @@ public class RecordColumns {
 
     public Optional<Column> getColumnByShowName(String showName) {
         return this.columns.stream()
-                .filter(column -> StringUtils.equals(column.getShowName(), showName))
+                .filter(column -> StrUtil.equals(column.getShowName(), showName))
                 .findFirst();
     }
 
     public Optional<Column> getColumnByCode(String colCode) {
         return this.columns.stream()
-                .filter(column -> StringUtils.equals(column.getColumnCode(), colCode))
+                .filter(column -> StrUtil.equals(column.getColumnCode(), colCode))
                 .findFirst();
     }
 

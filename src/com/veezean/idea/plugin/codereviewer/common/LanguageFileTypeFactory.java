@@ -7,8 +7,7 @@ import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.json.JsonFileType;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.fileTypes.PlainTextFileType;
-import com.jetbrains.jsonSchema.JsonSchemaFileType;
-import org.apache.commons.lang.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 /**
  * 文件类型工厂
@@ -25,7 +24,7 @@ public class LanguageFileTypeFactory {
      */
     public static LanguageFileType getLanguageFileType(String suffix) {
         LanguageFileType fileType = null;
-        suffix = StringUtils.isEmpty(suffix) ? "java" : suffix;
+        suffix = StrUtil.isEmpty(suffix) ? "java" : suffix;
         switch (suffix) {
             case "xml":
             case "iml":

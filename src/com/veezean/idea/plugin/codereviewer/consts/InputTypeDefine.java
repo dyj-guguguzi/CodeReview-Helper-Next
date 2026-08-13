@@ -2,7 +2,7 @@ package com.veezean.idea.plugin.codereviewer.consts;
 
 import com.veezean.idea.plugin.codereviewer.action.element.*;
 import com.veezean.idea.plugin.codereviewer.model.Column;
-import org.apache.commons.lang.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.util.Arrays;
 
@@ -44,7 +44,7 @@ public enum InputTypeDefine {
         }
         final String columnInputType = inputType;
 
-        return Arrays.stream(values()).filter(inputTypeDefine -> StringUtils.equals(inputTypeDefine.getValue(), columnInputType))
+        return Arrays.stream(values()).filter(inputTypeDefine -> StrUtil.equals(inputTypeDefine.getValue(), columnInputType))
                 .findFirst()
                 .orElse(TEXT)
                 .getElementCreator();

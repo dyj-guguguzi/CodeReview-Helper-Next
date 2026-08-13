@@ -17,8 +17,8 @@ import com.veezean.idea.plugin.codereviewer.service.ProjectLevelService;
 import com.veezean.idea.plugin.codereviewer.util.CommonUtil;
 import com.veezean.idea.plugin.codereviewer.util.LanguageUtil;
 import com.veezean.idea.plugin.codereviewer.util.Logger;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -132,7 +132,7 @@ public class NetworkConfigUI extends JDialog {
                 }
                 // 网络版本的相关配置
                 String serverUrl = serverUrlField.getText();
-                if (StringUtils.isNotEmpty(serverUrl) && !serverUrl.endsWith("/")) {
+                if (StrUtil.isNotEmpty(serverUrl) && !serverUrl.endsWith("/")) {
                     serverUrl += "/";
                 }
                 newConfigInfo.setServerAddress(serverUrl);
@@ -169,7 +169,7 @@ public class NetworkConfigUI extends JDialog {
         checkServerConnectionButton.addActionListener(e -> {
             serverUrlDetectResultShow.setText(LanguageUtil.getString("CONFIG_UI_DETECHTING_HINT"));
             String serverUrl = serverUrlField.getText();
-            if (StringUtils.isEmpty(serverUrl)) {
+            if (StrUtil.isEmpty(serverUrl)) {
                 serverUrlDetectResultShow.setText(LanguageUtil.getString("CONFIG_UI_INPUT_SERVER_HINT"));
                 return;
             }
@@ -217,13 +217,13 @@ public class NetworkConfigUI extends JDialog {
         loginCheckButton.addActionListener(e -> {
             String account = accountField.getText();
             char[] passwordChars = passwordField.getPassword();
-            if (StringUtils.isEmpty(account) || ArrayUtils.isEmpty(passwordChars)) {
+            if (StrUtil.isEmpty(account) || ArrayUtil.isEmpty(passwordChars)) {
                 loginCheckResultShow.setText(LanguageUtil.getString("CONFIG_UI_INPUT_ACCOUT_PWD"));
                 return;
             }
             String pwd = new String(passwordChars);
             String serverUrl = serverUrlField.getText();
-            if (StringUtils.isEmpty(serverUrl)) {
+            if (StrUtil.isEmpty(serverUrl)) {
                 loginCheckResultShow.setText(LanguageUtil.getString("CONFIG_UI_INPUT_SERVER_ADDRESS"));
                 return;
             }
@@ -297,8 +297,8 @@ public class NetworkConfigUI extends JDialog {
         serverDeployHelpButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         String pluginVersion =
-                Objects.requireNonNull(PluginManagerCore.getPlugin(PluginId.getId("com.veezean.idea.plugin" +
-                        ".codereviewer"))).getVersion();
+                Objects.requireNonNull(PluginManagerCore.getPlugin(PluginId.getId("com.dyj.codereview.helper.next")))
+                        .getVersion();
         pluginCurrentVersionLabel.setText(pluginVersion == null ? "" : pluginVersion);
 
         // 点击字段定制修改按钮
